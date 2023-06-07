@@ -1,6 +1,6 @@
 # GDB学习笔记
 
-## 日期2023.05.05
+## 更新日期2023.05.07
 
 ### 搭建docker测试环境
 ```
@@ -18,39 +18,53 @@ CMD ["/bin/bash"]
 docker build -t gdb-test:1.0 -f "path" .
 ```
 ----
-### 简单的断点
+## 简单的断点
 break可以根据行号，函数以及条件生成断点。</br>
-break+行号</br>     
+tbreak和break类似，只是tbreak只会停一次
+### 创建断点
 ```
-break 6
+break+行号</br>             break 6                 
+break+函数名                break add               
+break+条件                  break 10 if index==3
+break+文件+函数名
+---------------------------------------------------------------------------------
+(gdb) b break_test.c:add
+Breakpoint 6 at 0x5572b858d149: file break_test.c, line 4.
+(gdb) info b
+Num     Type           Disp Enb Address            What
+2       breakpoint     keep y   0x00005572b858d194 in main at break_test.c:14
+        stop only if c>=50
+6       breakpoint     keep y   0x00005572b858d149 in add at break_test.c:4
+(gdb)    
 ```
-break+函数名
+### 列出断点
 ```
-break add
+(gdb) info b
+Num     Type           Disp Enb Address            What
+1       breakpoint     keep y   0x00005572b858d149 in add at break_test.c:4
+        breakpoint already hit 1 time
+2       breakpoint     keep y   0x00005572b858d194 in main at break_test.c:14
+        stop only if c>=50
+(gdb)
 ```
-break+条件
+### 删除断点
 ```
-break 10 if index==3
-```
----
-### 测试示例
-```
-    root@0f99be1456a0:/code/code-space/code-share/work-space/learn/GDB-learn/gdb-learning/code/add# gdb test.out
-    (gdb) break 6
-    Breakpoint 1 at 0x1149: file main.c, line 6.
-    (gdb) c
-    The program is not being run.
-    (gdb) run
-    Starting program: /code/code-space/code-share/work-space/learn/GDB-learn/gdb-learning/code/add/ test.out
-    warning: Error disabling address space randomization: Operation not permitted
-    Breakpoint 1, add (a=21956, b=108265568) at main.c:6
-    warning: Source file is more recent than executable.
-    6       {
-    (gdb) step
-    7               return a+b;
-    (gdb) c
-    Continuing.
-    3
-    [Inferior 1 (process 54) exited normally]
-    (gdb)
+delete breakpoint 3 4 5
+(gdb) info b
+Num     Type           Disp Enb Address            What
+1       breakpoint     keep y   0x0000000000001149 in add at break_test.c:4
+2       breakpoint     keep y   0x0000000000001194 in main at break_test.c:14
+        stop only if c>=50
+3       breakpoint     keep y   0x0000000000001194 in main at break_test.c:14
+        stop only if c>=50
+4       breakpoint     keep y   0x0000000000001194 in main at break_test.c:14
+        stop only if c>=50
+5       breakpoint     keep y   0x0000000000001194 in main at break_test.c:14
+        stop only if c>=50
+(gdb) delete breakpoint 3 4 5
+(gdb) info b
+Num     Type           Disp Enb Address            What
+1       breakpoint     keep y   0x0000000000001149 in add at break_test.c:4
+2       breakpoint     keep y   0x0000000000001194 in main at break_test.c:14
+        stop only if c>=50
 ```
