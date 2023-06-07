@@ -20,7 +20,7 @@ docker build -t gdb-test:1.0 -f "path" .
 ----
 ## 简单的断点
 break可以根据行号，函数以及条件生成断点。</br>
-tbreak和break类似，只是tbreak只会停一次
+tbreak和break类似，只是tbreak只会停一次</br>
 ### 创建断点
 ```
 break+行号</br>             break 6                 
@@ -68,3 +68,8 @@ Num     Type           Disp Enb Address            What
 2       breakpoint     keep y   0x0000000000001194 in main at break_test.c:14
         stop only if c>=50
 ```
+---
+---
+---
+## 值的控制
+### 打印值
