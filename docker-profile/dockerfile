@@ -1,0 +1,17 @@
+FROM ubuntu:20.04
+
+LABEL name="GDB-TEST-FROM-BH" 
+LABEL maintainer="BH-GDB-test"
+
+RUN \
+      apt-get update && apt-get install -y \
+      # general tools
+      cmake \
+      gcc \
+      vim \
+      gdb \
+      openssh-server
+
+COPY ./init.sh /etc/
+
+CMD ["bash","-c","/etc/init.sh && tail -f /dev/null"]
